@@ -165,7 +165,7 @@ let
           # For some reason, I can't do this with the redirect as I did above
           "--tmpfs /usr/sbin"
           "--ro-bind ${ipBin} /usr/sbin/ip"
-          "--ro-bind ${ipBin} /usr/bin/ip"
+          # "--ro-bind ${ipBin} /usr/bin/ip"
         ];
 
       multiPkgs =
