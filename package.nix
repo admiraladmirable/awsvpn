@@ -77,10 +77,6 @@ let
       src = "${pkgs.sysctl}/bin/sysctl";
       dest = "/sbin/sysctl";
     }
-    {
-      src = "${pkgs.iproute2}/bin/ip";
-      dest = "/usr/bin/ip";
-    }
   ];
 
   mkDeb =
