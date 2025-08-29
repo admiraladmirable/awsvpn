@@ -170,11 +170,17 @@ let
 
       multiPkgs =
         _: with pkgs; [
-          # openssl_1_1
-          openssl
-          icu70
-          iproute2
-          ipcalc
+          stdenv.cc.cc.lib # For libstdc++.so.6
+          gtk3 # Required for GTK# bindings
+          glib # GTK dependency
+          cairo # For CairoSharp
+          pango # For PangoSharp
+          atk # For AtkSharp
+          gdk-pixbuf # For GdkSharp
+          icu70 # Internationalization
+          iproute2 # For network operations
+          ipcalc # For IP calculations
+          openssl # Use current version unless you find specific requirement otherwise
         ];
     };
 
@@ -207,12 +213,17 @@ let
 
       multiPkgs =
         _: with pkgs; [
-          # openssl_1_1
-          openssl
-          icu70
-          iproute2
-          ipcalc
-          gtk3
+          stdenv.cc.cc.lib # For libstdc++.so.6
+          gtk3 # Required for GTK# bindings
+          glib # GTK dependency
+          cairo # For CairoSharp
+          pango # For PangoSharp
+          atk # For AtkSharp
+          gdk-pixbuf # For GdkSharp
+          icu70 # Internationalization
+          iproute2 # For network operations
+          ipcalc # For IP calculations
+          openssl # Use current version unless you find specific requirement otherwise
         ];
 
       extraInstallCommands = ''
