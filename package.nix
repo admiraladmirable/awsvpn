@@ -216,18 +216,8 @@ let
         ];
 
       extraInstallCommands = ''
-        mkdir -p "$out/lib/systemd/system"
-        cat <<EOF > "$out/lib/systemd/system/AwsVpnClientService.service"
-        [Service]
-        Type=simple
-        ExecStart=${serviceFHS}/bin/${serviceFHS.name}
-        Restart=always
-        RestartSec=1s
-        User=root
-
-        [Install]
-        WantedBy=multi-user.target
-        EOF
+        mkdir -p "$out/bin"
+        ln -s "${serviceFHS}/bin/${serviceFHS.name}" "$out/bin/awsvpnclient-service-wrapped"
 
         mkdir -p "$out/share/applications"
         cp "${desktopItem}/share/applications/${pname}.desktop" "$out/share/applications/${pname}.desktop"
