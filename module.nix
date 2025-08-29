@@ -33,7 +33,7 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = [ package ];
-    systemd.services.AwsVpnClientService = {
+    systemd.services.awsvpnclient = {
       description = "AWS VPN Client Service";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
