@@ -6,6 +6,7 @@ with lib;
 
 let
   cfg = config.programs.awsvpnclient;
+  flake = builtins.getFlake (toString ./.);
   defaultVersion = import ./version.nix;
   package = (
     inputs.self.packages.${system}.awsvpnclient.overrideVersion {
@@ -30,9 +31,22 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = [ package ];
-    systemd.packages = [ package ];
+    systemd.services.AwsVpnClientService = {
+      description = "AWS VPN Client Service";
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
 
-    # Even though the service already defines this, nixos doesn't pick that up and leaves the service disabled
-    systemd.services.AwsVpnClientService.wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        # Use the service wrapper from the package
+        ExecStart = "${package}/bin/awsvpnclient-service-wrapped";
+        Restart = "always";
+        RestartSec = "1s";
+        User = "root";
+        # Add better logging
+        StandardOutput = "journal";
+        StandardError = "journal";
+      };
+    };
   };
 }

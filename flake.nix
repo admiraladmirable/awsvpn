@@ -26,11 +26,12 @@
           awsvpnclient = pkgs.callPackage ./package.nix { };
           default = awsvpnclient;
         };
-
-        nixosModules = rec {
-          default = awsvpnclient;
-          awsvpnclient = import ./module.nix { inherit inputs system; };
-        };
       }
-    );
+    )
+    // {
+      nixosModules = rec {
+        default = awsvpnclient;
+        awsvpnclient = import ./module.nix;
+      };
+    };
 }
