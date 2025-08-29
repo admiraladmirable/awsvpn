@@ -137,36 +137,36 @@ let
       runScript = "${serviceExe}";
       targetPkgs = _: [ deb ];
 
-      # extraBwrapArgs =
-      #   let
-      #     ipBin = pkgs.writeShellScript "fix_aws_ip_call.sh" ''
-      #       args=("$@")
-      #       arg1=''${args[0]}
-      #       arg2=''${args[1]}
-      #       arg3=''${args[2]}
-      #       arg4=''${args[3]}
-      #       arg5=''${args[4]}
-      #       arg6=''${args[5]}
-      #
-      #       # expected args: 'addr' 'add' 'dev' 'tun0' <ip> 'broadcast' <ip>
-      #       # if 'broadcast' is missing, calculate it
-      #       if [ "$arg1" = 'addr' ] && [ "$arg2" = 'add' ] && [ "$arg3" = 'dev' ] && [ "$arg4" = 'tun0' ] && [ -z "$arg6" ]; then
-      #         export $(${pkgs.ipcalc}/bin/ipcalc $arg5 -b)
-      #         ${pkgs.iproute2}/bin/ip "''${args[@]}" broadcast $BROADCAST
-      #       else
-      #         ${pkgs.iproute2}/bin/ip "$@"
-      #       fi
-      #     '';
-      #   in
-      #   [
-      #     # Service exe uses this as it's temp directory
-      #     "--tmpfs /opt/awsvpnclient/Resources"
-      #
-      #     # For some reason, I can't do this with the redirect as I did above
-      #     "--tmpfs /usr/sbin"
-      #     "--ro-bind ${ipBin} /usr/sbin/ip"
-      #     # "--ro-bind ${ipBin} /usr/bin/ip"
-      #   ];
+      extraBwrapArgs =
+        let
+          ipBin = pkgs.writeShellScript "fix_aws_ip_call.sh" ''
+            args=("$@")
+            arg1=''${args[0]}
+            arg2=''${args[1]}
+            arg3=''${args[2]}
+            arg4=''${args[3]}
+            arg5=''${args[4]}
+            arg6=''${args[5]}
+
+            # expected args: 'addr' 'add' 'dev' 'tun0' <ip> 'broadcast' <ip>
+            # if 'broadcast' is missing, calculate it
+            if [ "$arg1" = 'addr' ] && [ "$arg2" = 'add' ] && [ "$arg3" = 'dev' ] && [ "$arg4" = 'tun0' ] && [ -z "$arg6" ]; then
+              export $(${pkgs.ipcalc}/bin/ipcalc $arg5 -b)
+              ${pkgs.iproute2}/bin/ip "''${args[@]}" broadcast $BROADCAST
+            else
+              ${pkgs.iproute2}/bin/ip "$@"
+            fi
+          '';
+        in
+        [
+          # Service exe uses this as it's temp directory
+          "--tmpfs /opt/awsvpnclient/Resources"
+
+          # For some reason, I can't do this with the redirect as I did above
+          "--tmpfs /usr/sbin"
+          # "--ro-bind ${ipBin} /usr/sbin/ip"
+          # "--ro-bind ${ipBin} /usr/bin/ip"
+        ];
 
       multiPkgs =
         _: with pkgs; [
@@ -181,6 +181,7 @@ let
           iproute2 # For network operations
           ipcalc # For IP calculations
           openssl # Use current version unless you find specific requirement otherwise
+          systemd
         ];
     };
 
@@ -224,6 +225,7 @@ let
           iproute2 # For network operations
           ipcalc # For IP calculations
           openssl # Use current version unless you find specific requirement otherwise
+          systemd
         ];
 
       extraInstallCommands = ''
