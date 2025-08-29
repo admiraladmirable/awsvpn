@@ -1,18 +1,20 @@
-{ inputs, system, ... }:
-
-{ lib, config, ... }:
-
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 with lib;
-
 let
   cfg = config.programs.awsvpnclient;
-  flake = builtins.getFlake (toString ./.);
   defaultVersion = import ./version.nix;
-  package = (
-    inputs.self.packages.${system}.awsvpnclient.overrideVersion {
-      inherit (cfg) version sha256;
-    }
-  );
+
+  package = pkgs.callPackage ./package.nix { };
+  finalPackage =
+    if cfg.version != defaultVersion.version || cfg.sha256 != defaultVersion.sha256 then
+      package.overrideVersion { inherit (cfg) version sha256; }
+    else
+      package;
 in
 {
   options.programs.awsvpnclient = {
