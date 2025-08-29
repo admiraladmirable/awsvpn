@@ -50,10 +50,10 @@ let
       url = "${patchPrefix}/awsvpnclient.runtimeconfig.patch";
       sha256 = "sha256-+EZlLWSprpYkECjd0RyK1NmlJOoylS1A/+ry+AoUAcE=";
     }
-    {
-      url = "${patchPrefix}/configure-dns.patch";
-      sha256 = "sha256-R2FDj9EXmK2YCQPqMxvWnXFJ6NcUc1/3PEF3pII7bYk=";
-    }
+    # {
+    #   url = "${patchPrefix}/configure-dns.patch";
+    #   sha256 = "sha256-R2FDj9EXmK2YCQPqMxvWnXFJ6NcUc1/3PEF3pII7bYk=";
+    # }
   ];
 
   fetchedPatches = map (
