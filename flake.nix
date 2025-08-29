@@ -15,7 +15,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
+          # config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
         };
       in
       {

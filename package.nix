@@ -170,7 +170,8 @@ let
 
       multiPkgs =
         _: with pkgs; [
-          openssl_1_1
+          # openssl_1_1
+          openssl
           icu70
           iproute2
           ipcalc
@@ -206,7 +207,8 @@ let
 
       multiPkgs =
         _: with pkgs; [
-          openssl_1_1
+          # openssl_1_1
+          openssl
           icu70
           iproute2
           ipcalc
