@@ -181,6 +181,7 @@ let
           iproute2 # For network operations
           ipcalc # For IP calculations
           openssl # Use current version unless you find specific requirement otherwise
+          openvpn
           systemd
         ];
     };
@@ -225,6 +226,7 @@ let
           iproute2 # For network operations
           ipcalc # For IP calculations
           openssl # Use current version unless you find specific requirement otherwise
+          openvpn
           systemd
         ];
 
